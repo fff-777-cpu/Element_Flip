@@ -19,7 +19,7 @@ button {
   background: #2196F3;
   color: white;
   cursor: pointer;
-  transition: 0.5s;
+  transition: 0.1s;
   box-shadow: 0 4px 0 #1976D2;
 }
 /*
@@ -87,13 +87,20 @@ select {
   gap: 12px;
   align-items: center;
 }
+
+#clearMessage {
+  font-size: 28px;
+  font-weight: bold;
+  color: #E57373;
+  margin: 10px 0;
+}
   
 </style>
 </head>
 
 <body>
-
 <h2>元素神経衰弱</h2>
+<div id="clearMessage"></div>
   
 <div class="controls">
   <button onclick="initGame()">リセット</button>
@@ -207,7 +214,8 @@ function initGame() {
           second = null;
 
           if (matched === totalPairs) {
-            setTimeout(() => alert("クリア！"), 300);
+            //setTimeout(() => alert("クリア！"), 300);
+            document.getElementById("clearMessage").innerText = "クリア！";
           }
         } else {
           setTimeout(() => {
