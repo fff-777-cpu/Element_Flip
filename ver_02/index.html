@@ -94,64 +94,71 @@ let second = null;
 let matched = 0;
 const totalPairs = elements.length;
   
-cards.forEach(card => {
-  const div = document.createElement("div");
-  div.className = "card";
-  div.innerText = "?";
+function initGame() {
+  game.innerHTML = ""; // ←盤面リセット
 
-  div.dataset.value = card.value;
-  div.dataset.pair = card.pair;
+  first = null;
+  second = null;
+  matched = 0;
 
-  div.onclick = () => {
-//  if (div.classList.contains("flipped") || second) return;
-    if (
-      div.classList.contains("flipped") ||
-      div.classList.contains("matched") ||  // ←追加
-      div === first ||
-      second
-    ) return;
+  // シャッフル
+  cards.sort(() => Math.random() - 0.5);
 
-    div.classList.add("flipped");
-    div.innerHTML = card.value;
+  cards.forEach(card => {
+    const div = document.createElement("div");
+    div.className = "card";
+    div.innerText = "?";
 
-    if (!first) {
-      first = div;
-    } else {
-      second = div;
+    div.dataset.value = card.value;
+    div.dataset.pair = card.pair;
 
-//    if (first.innerHTML === card.pair) {
-      if (first.dataset.value === div.dataset.pair)
-        matched++;
-        
-        first.classList.add("matched");
-        second.classList.add("matched");
+    div.onclick = () => {
+      if (
+        div.classList.contains("flipped") ||
+        div.classList.contains("matched") ||
+        div === first ||
+        second
+      ) return;
 
-        first.classList.remove("flipped");
-        second.classList.remove("flipped");
-        
-        first = null;
-        second = null;
+      div.classList.add("flipped");
+      div.innerHTML = card.value;
 
-        if (matched === totalPairs) {
-          setTimeout(() => {
-            alert("クリア！");
-          }, 300);
-        }
+      if (!first) {
+        first = div;
       } else {
-        setTimeout(() => {
+        second = div;
+
+        if (first.dataset.value === div.dataset.pair) {
+          matched++;
+
+          first.classList.add("matched");
+          second.classList.add("matched");
+
           first.classList.remove("flipped");
           second.classList.remove("flipped");
-          first.innerText = "?";
-          second.innerText = "?";
+
           first = null;
           second = null;
-        }, 800);
-      }
-    }
-  };
 
-  game.appendChild(div);
-});
+          if (matched === totalPairs) {
+            setTimeout(() => alert("クリア！"), 300);
+          }
+        } else {
+          setTimeout(() => {
+            first.classList.remove("flipped");
+            second.classList.remove("flipped");
+            first.innerText = "?";
+            second.innerText = "?";
+            first = null;
+            second = null;
+          }, 800);
+        }
+      }
+    };
+
+    game.appendChild(div);
+  });
+}
 </script>
 
 </body>
