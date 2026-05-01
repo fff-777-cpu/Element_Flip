@@ -10,7 +10,6 @@ body {
   text-align: center;
   font-family: sans-serif;
 }
-  
 button {
   padding: 10px 20px;
   font-size: 16px;
@@ -32,7 +31,6 @@ button:active {
   transform: translateY(+3px);
   box-shadow: 0 1px 0 royalblue; /*#1976D2;*/
 }
-
 select {
   /*margin-top: 15px;*/
   padding: 8px 12px;
@@ -42,14 +40,12 @@ select {
   background: white;
   cursor: pointer;
 }
-
 .grid {
   display: grid;
   grid-template-columns: repeat(4, 80px);
   gap: 10px;
   justify-content: center;
 }
-
 .card {
   width: 80px;
   height: 100px;
@@ -63,7 +59,6 @@ select {
   border-radius: 8px;
   box-sizing: border-box;  /* ←これ重要 */
 }
-
 .card.flipped {
   /*transform: scale(1.01);*/
   background: white;
@@ -72,14 +67,12 @@ select {
   z-index: 10;
   position: relative;
 }
-
 .card.matched {
   background: gold;
   color: black;
   border: 2px solid mediumseagreen; /*#4CAF50; /* orange -> #4CAF50 */
   /*transform: scale(1.005);*/
 }
-
 .controls {
   margin: 15px 0;
   display: flex;
@@ -87,14 +80,35 @@ select {
   gap: 12px;
   align-items: center;
 }
-
 #clearMessage {
   font-size: 28px;
   font-weight: bold;
-  color: indigo; /*#E57373;*/
+  color: red; /*indigo; /*#E57373;*/
   margin: 10px 0;
 }
-  
+.popup {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(1.2);
+  background: rgba(0,0,0,0.85);
+  color: gold;
+  padding: 30px 60px;
+  font-size: 40px;
+  font-weight: bold;
+  border-radius: 16px;
+  z-index: 9999;
+
+  opacity: 0;
+  transition: 0.25s ease;
+}
+.popup.show {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+}
+.hidden {
+  display: none;
+}
 </style>
 </head>
 
@@ -113,7 +127,8 @@ select {
 </div>
 
 <div class="grid" id="game"></div>
-  
+<div id="popup" class="popup hidden">クリア！</div>
+
 <script>
 const elements = [
   {symbol:"H", name:"水素", number:1},
@@ -215,7 +230,19 @@ function initGame() {
 
           if (matched === totalPairs) {
             //setTimeout(() => alert("クリア！"), 300);
-            document.getElementById("clearMessage").innerText = "クリア！";
+            //document.getElementById("clearMessage").innerText = "クリア！";
+            const popup = document.getElementById("popup");
+            // 表示準備（display:none解除）
+            popup.classList.remove("hidden");
+            // ふわっと出す
+            setTimeout(() => {
+              popup.classList.add("show");
+            }, 10);
+            // 少ししたら消す
+            setTimeout(() => {
+              popup.classList.remove("show");
+              popup.classList.add("hidden");
+            }, 1500);
           }
         } else {
           setTimeout(() => {
