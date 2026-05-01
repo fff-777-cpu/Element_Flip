@@ -10,6 +10,38 @@ body {
   text-align: center;
   font-family: sans-serif;
 }
+  
+button {
+  /*margin-top: 15px;*/
+  padding: 10px 20px;
+  font-size: 16px;
+  border: none;
+  border-radius: 8px;
+  background: #2196F3;
+  color: white;
+  cursor: pointer;
+  transition: 0.2s;
+  box-shadow: 0 4px 0 #1976D2;
+}
+
+button:hover {
+  background: #1E88E5;
+}
+
+button:active {
+  transform: translateY(2px);
+  box-shadow: 0 2px 0 #1976D2;
+}
+
+select {
+  /*margin-top: 15px;*/
+  padding: 8px 12px;
+  font-size: 16px;
+  border-radius: 8px;
+  border: 2px solid #4CAF50;
+  background: white;
+  cursor: pointer;
+}
 
 .grid {
   display: grid;
@@ -47,6 +79,13 @@ body {
   border: 2px solid #4CAF50; /* orange -> #4CAF50 */
   /*transform: scale(1.005);*/
 }
+
+.controls {
+  margin: 15px 0;
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+}
   
 </style>
 </head>
@@ -55,13 +94,16 @@ body {
 
 <h2>元素神経衰弱</h2>
 <div class="grid" id="game"></div>
-<button onclick="initGame()">リセット</button>
   
-<select id="difficulty" onchange="initGame()">
-  <option value="4">Easy（4ペア）</option>
-  <option value="8" selected>Normal（8ペア）</option>
-  <option value="16">Hard（16ペア）</option>
-</select>
+<div class="controls">
+  <button onclick="initGame()">リセット</button>
+
+  <select id="difficulty" onchange="initGame()">
+    <option value="4">Easy（4ペア）</option>
+    <option value="8" selected>Normal（8ペア）</option>
+    <option value="16">Hard（16ペア）</option>
+  </select>
+</div>
   
 <script>
 const elements = [
