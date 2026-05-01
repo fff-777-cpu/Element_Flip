@@ -57,6 +57,12 @@ body {
 <div class="grid" id="game"></div>
 <button onclick="initGame()">リセット</button>
   
+<select id="difficulty" onchange="initGame()">
+  <option value="4">Easy（4ペア）</option>
+  <option value="8" selected>Normal（8ペア）</option>
+  <option value="16">Hard（16ペア）</option>
+</select>
+  
 <script>
 const elements = [
   {symbol:"H", name:"水素", number:1},
@@ -76,7 +82,7 @@ const elements = [
   {symbol:"Zn", name:"亜鉛", number:30},
   {symbol:"Fe", name:"鉄", number:26}
 ];
-
+/*
 // カード作成
 let cards = [];
 elements.forEach(e => {
@@ -86,15 +92,31 @@ elements.forEach(e => {
 
 // シャッフル
 cards.sort(() => Math.random() - 0.5);
-
+*/
 const game = document.getElementById("game");
 
 let first = null;
 let second = null;
 let matched = 0;
-const totalPairs = elements.length;
+// const totalPairs = elements.length;
   
 function initGame() {
+  const pairCount = Number(document.getElementById("difficulty").value);
+  // 全元素をシャッフル
+  const shuffled = [...elements].sort(() => Math.random() - 0.5);
+  // 必要な分だけ取る
+  const selected = shuffled.slice(0, pairCount);
+  // cardsをここで作る
+  let cards = [];
+  selected.forEach(e => {
+    cards.push({value:e.symbol, pair:e.name});
+    cards.push({value:e.name, pair:e.symbol});
+  });
+  // cardsもシャッフル
+  cards.sort(() => Math.random() - 0.5);
+  // ペア数
+  const totalPairs = pairCount;
+  
   game.innerHTML = ""; // ←盤面リセット
 
   first = null;
@@ -102,7 +124,7 @@ function initGame() {
   matched = 0;
 
   // シャッフル
-  cards.sort(() => Math.random() - 0.5);
+  //cards.sort(() => Math.random() - 0.5);
 
   cards.forEach(card => {
     const div = document.createElement("div");
