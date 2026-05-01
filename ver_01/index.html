@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>元素神経衰弱</title>
+
+<style>
+body {
+  text-align: center;
+  font-family: sans-serif;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(4, 80px);
+  gap: 10px;
+  justify-content: center;
+}
+
+.card {
+  width: 80px;
+  height: 100px;
+  background: #4CAF50;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 19px;
+  transition: 0.3s;
+  border-radius: 8px;
+  box-sizing: border-box;  /* ←これ重要 */
+}
+
+.card.flipped {
+  /*transform: scale(1.01);*/
+  background: white;
+  color: black;
+  border: 2px solid #4CAF50;
+  z-index: 10;
+  position: relative;
+}
+
+.card.matched {
+  background: gold;
+  color: black;
+  border: 2px solid #4CAF50; /* orange -> #4CAF50 */
+  /*transform: scale(1.005);*/
+}
+  
+</style>
+</head>
+
+<body>
+
+<h2>元素神経衰弱</h2>
+<div class="grid" id="game"></div>
+
+<script>
+const elements = [
+  {symbol:"H", name:"水素", number:1},
+  {symbol:"He", name:"ヘリウム", number:2},
+  {symbol:"Li", name:"リチウム", number:3},
+  {symbol:"Be", name:"ベリ<br>リウム", number:4},
+  {symbol:"B", name:"ホウ素", number:5},
+  {symbol:"C", name:"炭素", number:6},
+  {symbol:"N", name:"窒素", number:7},
+  {symbol:"O", name:"酸素", number:8},
+  {symbol:"F", name:"フッ素", number:9},
+  {symbol:"Ne", name:"ネオン", number:10},
+  {symbol:"Au", name:"金", number:79},
+  {symbol:"Ag", name:"銀", number:47},
+  {symbol:"Cu", name:"銅", number:29},
+  {symbol:"Ba", name:"バリウム", number:56},
+  {symbol:"Zn", name:"亜鉛", number:30},
+  {symbol:"Fe", name:"鉄", number:26}
+];
+
+// カード作成
+let cards = [];
+elements.forEach(e => {
+  cards.push({value:e.symbol, pair:e.name});
+  cards.push({value:e.name, pair:e.symbol});
+});
+
+// シャッフル
+cards.sort(() => Math.random() - 0.5);
+
+const game = document.getElementById("game");
+
+let first = null;
+let second = null;
+let matched = 0;
+const totalPairs = elements.length;
+  
+cards.forEach(card => {
+  const div = document.createElement("div");
+  div.className = "card";
+  div.innerText = "?";
+
+  div.onclick = () => {
+    if (div.classList.contains("flipped") || second) return;
+
+    div.classList.add("flipped");
+    div.innerHTML = card.value;
+
+    if (!first) {
+      first = div;
+    } else {
+      second = div;
+
+      if (first.innerHTML === card.pair) {
+        matched++;
+        
+        first.classList.add("matched");
+        second.classList.add("matched");
+
+        first.classList.remove("flipped");
+        second.classList.remove("flipped");
+        
+        first = null;
+        second = null;
+
+        if (matched === totalPairs) {
+          setTimeout(() => {
+            alert("クリア！");
+          }, 300);
+        }
+      } else {
+        setTimeout(() => {
+          first.classList.remove("flipped");
+          second.classList.remove("flipped");
+          first.innerText = "?";
+          second.innerText = "?";
+          first = null;
+          second = null;
+        }, 800);
+      }
+    }
+  };
+
+  game.appendChild(div);
+});
+</script>
+
+</body>
+</html>
