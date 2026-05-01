@@ -80,27 +80,30 @@ select {
   gap: 12px;
   align-items: center;
 }
+/*
 #clearMessage {
   font-size: 28px;
   font-weight: bold;
-  color: red; /*indigo; /*#E57373;*/
+  color: red; /*indigo; /*#E57373;
   margin: 10px 0;
 }
+*/
 .popup {
   position: fixed;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%) scale(1.2);
-  background: rgba(0,0,0,0.85);
-  color: gold;
-  padding: 30px 60px;
+  background: white; /*rgba(0,0,0,0.85);*/
+  color: red; /*gold;*/
+  padding: 100px 80px;
   font-size: 40px;
   font-weight: bold;
   border-radius: 16px;
   z-index: 9999;
 
   opacity: 0;
-  transition: 0.25s ease;
+  /*transition: 0.25s ease;*/
+  transition: opacity 0.35s ease, transform 0.35s ease;
 }
 .popup.show {
   opacity: 1;
@@ -108,6 +111,7 @@ select {
 }
 .hidden {
   display: none;
+  /*pointer-events: none;*/
 }
 </style>
 </head>
@@ -232,17 +236,20 @@ function initGame() {
             //setTimeout(() => alert("クリア！"), 300);
             //document.getElementById("clearMessage").innerText = "クリア！";
             const popup = document.getElementById("popup");
-            // 表示準備（display:none解除）
+            // ① 表示可能にする
             popup.classList.remove("hidden");
-            // ふわっと出す
+            // ② フェードイン
             setTimeout(() => {
               popup.classList.add("show");
             }, 10);
-            // 少ししたら消す
+            // ③ フェードアウト開始
             setTimeout(() => {
               popup.classList.remove("show");
+            }, 2000);
+            // ④ 完全に消す
+            setTimeout(() => {
               popup.classList.add("hidden");
-            }, 1500);
+            }, 2400);
           }
         } else {
           setTimeout(() => {
