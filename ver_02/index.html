@@ -55,7 +55,8 @@ body {
 
 <h2>元素神経衰弱</h2>
 <div class="grid" id="game"></div>
-
+<button onclick="initGame()">リセット</button>
+  
 <script>
 const elements = [
   {symbol:"H", name:"水素", number:1},
@@ -98,8 +99,17 @@ cards.forEach(card => {
   div.className = "card";
   div.innerText = "?";
 
+  div.dataset.value = card.value;
+  div.dataset.pair = card.pair;
+
   div.onclick = () => {
-    if (div.classList.contains("flipped") || second) return;
+//  if (div.classList.contains("flipped") || second) return;
+    if (
+      div.classList.contains("flipped") ||
+      div.classList.contains("matched") ||  // ←追加
+      div === first ||
+      second
+    ) return;
 
     div.classList.add("flipped");
     div.innerHTML = card.value;
@@ -109,7 +119,8 @@ cards.forEach(card => {
     } else {
       second = div;
 
-      if (first.innerHTML === card.pair) {
+//    if (first.innerHTML === card.pair) {
+      if (first.dataset.value === div.dataset.pair)
         matched++;
         
         first.classList.add("matched");
