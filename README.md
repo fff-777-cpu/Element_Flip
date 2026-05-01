@@ -1,2 +1,2 @@
 # Element_Flip
-Memory game of Elements
+Memory Game of Elements
