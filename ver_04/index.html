@@ -51,7 +51,7 @@ select {
   font-size: 19px;
   transition: 0.3s;
   border-radius: 8px;
-  box-sizing: border-box;  /* ←これ重要 */
+  box-sizing: border-box;
 }
 .card.flipped {
   /*transform: scale(1.01);*/
@@ -114,7 +114,7 @@ select {
 </head>
 
 <body>
-<h2>元素神経衰弱</h2>
+<h2 id="title">元素神経衰弱</h2>
 <div id="clearMessage"></div>
 <div id="modeScreen">
   <h2>モード選択</h2>
@@ -186,9 +186,18 @@ let matched = 0;
 
 let currentElements = [];
 function startGame(mode) {
-  if (mode === "junior") currentElements = elements_junior;
-  if (mode === "high") currentElements = elements_high;
-  if (mode === "oni") currentElements = elements_oni;
+  if (mode === "junior") {
+    currentElements = elements_junior;
+    document.getElementById("title").innerText = "Mode_JUNIOR";
+  }
+  if (mode === "high") {
+    currentElements = elements_high;
+    document.getElementById("title").innerText = "Mode_HIGH";
+  }
+  if (mode === "oni") {
+    currentElements = elements_oni;
+    document.getElementById("title").innerText = "Mode_ONI";
+  }
 
   document.getElementById("modeScreen").classList.add("hidden");
   document.getElementById("gameScreen").classList.remove("hidden");
