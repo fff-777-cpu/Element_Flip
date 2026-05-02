@@ -116,19 +116,25 @@ select {
 <body>
 <h2>元素神経衰弱</h2>
 <div id="clearMessage"></div>
-  
-<div class="controls">
-  <button onclick="initGame()">リセット</button>
-
-  <select id="difficulty" onchange="initGame()">
-    <option value="4">Easy（4ペア）</option>
-    <option value="8" selected>Normal（8ペア）</option>
-    <option value="16">Hard（16ペア）</option>
-  </select>
+<div id="modeScreen">
+  <h2>モード選択</h2>
+  <button onclick="startGame('junior')">中学生モード</button><br><br>
+  <button onclick="startGame('high')">高校生モード</button><br><br>
+  <button onclick="startGame('oni')">鬼ハードモード</button>
 </div>
-
-<div class="grid" id="game"></div>
-<div id="popup" class="popup hidden">クリア！</div>
+<div id="gameScreen" class="hidden">
+  <div class="controls">
+    <button onclick="initGame()">リセット</button>
+    
+    <select id="difficulty" onchange="initGame()">
+      <option value="4">Easy（4ペア）</option>
+      <option value="8" selected>Normal（8ペア）</option>
+      <option value="16">Hard（16ペア）</option>
+    </select>
+  </div>
+  <div class="grid" id="game"></div>
+  <div id="popup" class="popup hidden">クリア！</div>
+</div>
 
 <script>
 const elements = [
@@ -149,28 +155,52 @@ const elements = [
   {symbol:"Zn", name:"亜鉛", number:30},
   {symbol:"Fe", name:"鉄", number:26}
 ];
-/*
-// カード作成
-let cards = [];
-elements.forEach(e => {
-  cards.push({value:e.symbol, pair:e.name});
-  cards.push({value:e.name, pair:e.symbol});
-});
 
-// シャッフル
-cards.sort(() => Math.random() - 0.5);
-*/
+const elements_junior = [
+  {symbol:"H", name:"水素"},
+  {symbol:"O", name:"酸素"},
+  {symbol:"N", name:"窒素"},
+  {symbol:"C", name:"炭素"},
+  {symbol:"Fe", name:"鉄"},
+  {symbol:"Cu", name:"銅"}
+];
+
+const elements_high = [
+  ...elements_junior,
+  {symbol:"Na", name:"ナトリウム"},
+  {symbol:"Cl", name:"塩素"},
+  {symbol:"Mg", name:"マグネシウム"},
+  {symbol:"Ca", name:"カルシウム"},
+  {symbol:"Zn", name:"亜鉛"}
+];
+
+// 鬼ハードは今の全部使う
+const elements_oni = elements;
+  
 const game = document.getElementById("game");
 
 let first = null;
 let second = null;
 let matched = 0;
 // const totalPairs = elements.length;
+
+let currentElements = [];
+function startGame(mode) {
+  if (mode === "junior") currentElements = elements_junior;
+  if (mode === "high") currentElements = elements_high;
+  if (mode === "oni") currentElements = elements_oni;
+
+  document.getElementById("modeScreen").classList.add("hidden");
+  document.getElementById("gameScreen").classList.remove("hidden");
+
+  initGame();
+}
   
 function initGame() {
   const pairCount = Number(document.getElementById("difficulty").value);
   // 全元素をシャッフル
-  const shuffled = [...elements].sort(() => Math.random() - 0.5);
+  //const shuffled = [...elements].sort(() => Math.random() - 0.5);
+  const shuffled = [...currentElements].sort(() => Math.random() - 0.5);
   // 必要な分だけ取る
   const selected = shuffled.slice(0, pairCount);
   // cardsをここで作る
@@ -182,16 +212,14 @@ function initGame() {
   // cardsもシャッフル
   cards.sort(() => Math.random() - 0.5);
   // ペア数
-  const totalPairs = pairCount;
+  //const totalPairs = pairCount;
+  const totalPairs = selected.length;
   
   game.innerHTML = ""; // ←盤面リセット
 
   first = null;
   second = null;
   matched = 0;
-
-  // シャッフル
-  //cards.sort(() => Math.random() - 0.5);
 
   cards.forEach(card => {
     const div = document.createElement("div");
@@ -260,7 +288,7 @@ function initGame() {
     game.appendChild(div);
   });
 }
-initGame();
+//initGame();
 </script>
 
 </body>
