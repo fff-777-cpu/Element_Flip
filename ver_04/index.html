@@ -11,8 +11,10 @@ body {
   font-family: sans-serif;
 }
 button {
-  padding: 10px 20px;
-  font-size: 16px;
+  /*padding: 10px 20px;
+  font-size: 16px;*/
+  padding: 1.5vw 2vw;
+  font-size: clamp(12px, 2.5vw, 16px);
   border: none;
   border-radius: 8px;
   /*background: dodgerblue;*/
@@ -27,9 +29,11 @@ button:active {
   box-shadow: 0 1px 0 black;
 }
 select {
-  /*margin-top: 15px;*/
+  /*margin-top: 15px;
   padding: 8px 12px;
-  font-size: 16px;
+  font-size: 16px;*/
+  padding: 1vw 1.5vw;
+  font-size: clamp(12px, 2.5vw, 16px);
   border-radius: 8px;
   border: 2px solid royalblue; /*#2196F3; /* #4CAF50 -> #2196F3 */
   background: white;
@@ -77,6 +81,9 @@ select {
   justify-content: center;
   gap: 12px;
   align-items: center;
+  max-width: 90vw;   /* ←これ追加 */
+  margin-left: auto;
+  margin-right: auto;
 }
 .popup {
   position: fixed;
@@ -128,6 +135,12 @@ button.back {
 button.reset {
   background: dodgerblue;
   box-shadow: 0 4px 0 royalblue;
+}
+
+.controls button,
+.controls select {
+  flex: 1 1 0;
+  min-width: 0;
 }
 </style>
 </head>
