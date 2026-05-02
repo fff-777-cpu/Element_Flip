@@ -15,15 +15,16 @@ button {
   font-size: 16px;
   border: none;
   border-radius: 8px;
-  background: dodgerblue;
+  /*background: dodgerblue;*/
   color: white;
   cursor: pointer;
   transition: 0.1s;
-  box-shadow: 0 4px 0 royalblue;
+  /*box-shadow: 0 4px 0 royalblue;*/
+  white-space: nowrap;
 }
 button:active {
   transform: translateY(+3px);
-  box-shadow: 0 1px 0 royalblue;
+  box-shadow: 0 1px 0 black;
 }
 select {
   /*margin-top: 15px;*/
@@ -102,6 +103,29 @@ select {
   display: none;
   /*pointer-events: none;*/
 }
+
+/* モード選択 */
+button.junior {
+  background: mediumseagreen;
+  box-shadow: 0 4px 0 teal;
+}
+button.high {
+  background: mediumseagreen;
+  box-shadow: 0 4px 0 teal;
+}
+button.oni {
+  background: red;
+  box-shadow: 0 4px 0 brown;
+}
+/* ゲーム中 */
+button.back {
+  background: dodgerblue;
+  box-shadow: 0 4px 0 royalblue;
+}
+button.reset {
+  background: dodgerblue;
+  box-shadow: 0 4px 0 royalblue;
+}
 </style>
 </head>
 
@@ -109,16 +133,15 @@ select {
 <h2 id="title">元素神経衰弱</h2>
 <div id="clearMessage"></div>
 <div id="modeScreen">
-  <!--<h2>モード選択</h2>--><br><br><br>
-  <button onclick="startGame('junior')">中学生モード</button><br><br>
-  <button onclick="startGame('high')">高校生モード</button><br><br><br><br>
-  <button onclick="startGame('oni')">鬼ハード</button>
+  <br><br><br>
+  <button class="junior" onclick="startGame('junior')">中学生モード</button><br><br>
+  <button class="high" onclick="startGame('high')">高校生モード</button><br><br><br><br>
+  <button class="oni" onclick="startGame('oni')">鬼ハード</button>
 </div>
 <div id="gameScreen" class="hidden">
   <div class="controls">
-    <button onclick="backToMode()">◀︎モード選択</button>
-    <button onclick="initGame()">リセット</button>
-    
+    <button class="back" onclick="backToMode()">◀︎モード選択</button>
+    <button class="reset" onclick="initGame()">リセット</button>
     <select id="difficulty" onchange="initGame()">
       <option value="4">Easy（4ペア）</option>
       <option value="8" selected>Normal（8ペア）</option>
@@ -184,6 +207,7 @@ let currentElements = [];
 function backToMode() {
   document.getElementById("gameScreen").classList.add("hidden");
   document.getElementById("modeScreen").classList.remove("hidden");
+  document.getElementById("title").innerText = "元素神経衰弱";
 }
   
 function startGame(mode) {
