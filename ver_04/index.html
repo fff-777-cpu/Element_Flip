@@ -15,21 +15,15 @@ button {
   font-size: 16px;
   border: none;
   border-radius: 8px;
-  background: dodgerblue; /*#2196F3;*/
+  background: dodgerblue;
   color: white;
   cursor: pointer;
   transition: 0.1s;
-  box-shadow: 0 4px 0 royalblue; /*#1976D2;*/
+  box-shadow: 0 4px 0 royalblue;
 }
-/*
-button:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 5px 0 #1976D2;
-}
-*/
 button:active {
   transform: translateY(+3px);
-  box-shadow: 0 1px 0 royalblue; /*#1976D2;*/
+  box-shadow: 0 1px 0 royalblue;
 }
 select {
   /*margin-top: 15px;*/
@@ -239,17 +233,13 @@ function initGame() {
             //setTimeout(() => alert("クリア！"), 300);
             //document.getElementById("clearMessage").innerText = "クリア！";
             const popup = document.getElementById("popup");
-            // ① 表示可能にする
             popup.classList.remove("hidden");
-            // ② フェードイン
             setTimeout(() => {
               popup.classList.add("show");
             }, 10);
-            // ③ フェードアウト開始
             setTimeout(() => {
               popup.classList.remove("show");
             }, 2000);
-            // ④ 完全に消す
             setTimeout(() => {
               popup.classList.add("hidden");
             }, 2400);
@@ -262,7 +252,7 @@ function initGame() {
             second.innerText = "?";
             first = null;
             second = null;
-          }, 800);
+          }, 1500);
         }
       }
     };
