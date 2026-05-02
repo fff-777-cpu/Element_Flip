@@ -109,13 +109,14 @@ select {
 <h2 id="title">元素神経衰弱</h2>
 <div id="clearMessage"></div>
 <div id="modeScreen">
-  <!--<h2>モード選択</h2>-->
+  <!--<h2>モード選択</h2>--><br><br><br>
   <button onclick="startGame('junior')">中学生モード</button><br><br>
-  <button onclick="startGame('high')">高校生モード</button><br><br>
+  <button onclick="startGame('high')">高校生モード</button><br><br><br><br>
   <button onclick="startGame('oni')">鬼ハード</button>
 </div>
 <div id="gameScreen" class="hidden">
   <div class="controls">
+    <button onclick="backToMode()">◀︎モード選択</button>
     <button onclick="initGame()">リセット</button>
     
     <select id="difficulty" onchange="initGame()">
@@ -179,6 +180,12 @@ let matched = 0;
 // const totalPairs = elements.length;
 
 let currentElements = [];
+
+function backToMode() {
+  document.getElementById("gameScreen").classList.add("hidden");
+  document.getElementById("modeScreen").classList.remove("hidden");
+}
+  
 function startGame(mode) {
   if (mode === "junior") {
     currentElements = elements_junior;
