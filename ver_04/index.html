@@ -49,36 +49,6 @@ select {
   max-width: 90vw; /* 320px;   /* ←追加 */
   margin: 0 auto;     /* ←中央寄せ */
 }
-.card {
-  /*width: 80px;
-  height: 100px;*/
-  width: 100%;   /* ←固定80pxやめる */
-  aspect-ratio: 4 / 5;  /* ←縦横比キープ（超便利） */
-  background: mediumseagreen; /*#4CAF50;*/
-  color: white;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  /*font-size: 19px;*/
-  font-size: clamp(12px, 4vw, 20px);
-  transition: 0.3s;
-  border-radius: 8px;
-  box-sizing: border-box;
-}
-.card.flipped {
-  /*transform: scale(1.01);*/
-  background: white;
-  color: black;
-  border: 2px solid mediumseagreen; /*#4CAF50;*/
-  z-index: 10;
-  position: relative;
-}
-.card.matched {
-  background: gold;
-  color: black;
-  border: 2px solid mediumseagreen; /*#4CAF50; /* orange -> #4CAF50 */
-  /*transform: scale(1.005);*/
-}
 .controls {
   margin: 15px 0;
   display: flex;
@@ -120,25 +90,23 @@ select {
   display: none;
   /*pointer-events: none;*/
 }
-
 /* モード選択 */
-button.junior {
+/* button.junior {
   background: mediumseagreen;
-  /*box-shadow: 0 4px 0 teal;*/
+  box-shadow: 0 4px 0 teal;
 }
 button.high {
   background: mediumseagreen;
-  /*box-shadow: 0 4px 0 teal;*/
+  box-shadow: 0 4px 0 teal;
+} */
+button.junior,
+button.high {
+  background: mediumseagreen;
+  box-shadow: 0 clamp(2px, 0.5vw, 4px) 0 teal;
 }
 button.oni {
   background: red;
   /*box-shadow: 0 4px 0 brown;*/
-}
-button.junior,
-button.high {
-  box-shadow: 0 clamp(2px, 0.5vw, 4px) 0 teal;
-}
-button.oni {
   box-shadow: 0 clamp(2px, 0.5vw, 4px) 0 brown;
 }
 /* ゲーム中 */
@@ -154,6 +122,36 @@ button.back,
 button.reset {
   background: dodgerblue;
   box-shadow: 0 clamp(2px, 0.5vw, 4px) 0 royalblue;
+}
+.card {
+  /*width: 80px;
+  height: 100px;*/
+  width: 100%;   /* ←固定80pxやめる */
+  aspect-ratio: 4 / 5;  /* ←縦横比キープ（超便利） */
+  background: mediumseagreen; /*#4CAF50;*/
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /*font-size: 19px;*/
+  font-size: clamp(12px, 4vw, 20px);
+  transition: 0.3s;
+  border-radius: 8px;
+  box-sizing: border-box;
+}
+.card.flipped {
+  /*transform: scale(1.01);*/
+  background: white;
+  color: black;
+  border: 2px solid mediumseagreen; /*#4CAF50;*/
+  z-index: 10;
+  position: relative;
+}
+.card.matched {
+  background: gold;
+  color: black;
+  border: 2px solid mediumseagreen; /*#4CAF50; /* orange -> #4CAF50 */
+  /*transform: scale(1.005);*/
 }
 .controls button,
 .controls select {
