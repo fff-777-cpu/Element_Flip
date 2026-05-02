@@ -25,8 +25,10 @@ button {
   white-space: nowrap;
 }
 button:active {
-  transform: translateY(+3px);
-  box-shadow: 0 1px 0 black;
+  /*transform: translateY(+3px);
+  box-shadow: 0 1px 0 black;*/
+  transform: translateY(clamp(2px, 0.5vw, 4px));
+  box-shadow: 0 clamp(1px, 0.2vw, 2px) 0 black;
 }
 select {
   /*margin-top: 15px;
@@ -122,26 +124,36 @@ select {
 /* モード選択 */
 button.junior {
   background: mediumseagreen;
-  box-shadow: 0 4px 0 teal;
+  /*box-shadow: 0 4px 0 teal;*/
 }
 button.high {
   background: mediumseagreen;
-  box-shadow: 0 4px 0 teal;
+  /*box-shadow: 0 4px 0 teal;*/
 }
 button.oni {
   background: red;
-  box-shadow: 0 4px 0 brown;
+  /*box-shadow: 0 4px 0 brown;*/
+}
+button.junior,
+button.high {
+  box-shadow: 0 clamp(2px, 0.5vw, 4px) 0 teal;
+}
+button.oni {
+  box-shadow: 0 clamp(2px, 0.5vw, 4px) 0 brown;
 }
 /* ゲーム中 */
-button.back {
+/*button.back {
   background: dodgerblue;
   box-shadow: 0 4px 0 royalblue;
 }
 button.reset {
   background: dodgerblue;
   box-shadow: 0 4px 0 royalblue;
+}*/
+button.back,
+button.reset {
+  box-shadow: 0 clamp(2px, 0.5vw, 4px) 0 royalblue;
 }
-
 .controls button,
 .controls select {
   flex: 1 1 0;
