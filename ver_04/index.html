@@ -74,14 +74,6 @@ select {
   gap: 12px;
   align-items: center;
 }
-/*
-#clearMessage {
-  font-size: 28px;
-  font-weight: bold;
-  color: red; /*indigo; /*#E57373;
-  margin: 10px 0;
-}
-*/
 .popup {
   position: fixed;
   top: 50%;
@@ -117,10 +109,10 @@ select {
 <h2 id="title">元素神経衰弱</h2>
 <div id="clearMessage"></div>
 <div id="modeScreen">
-  <h2>モード選択</h2>
+  <!--<h2>モード選択</h2>-->
   <button onclick="startGame('junior')">中学生モード</button><br><br>
   <button onclick="startGame('high')">高校生モード</button><br><br>
-  <button onclick="startGame('oni')">鬼ハードモード</button>
+  <button onclick="startGame('oni')">鬼ハード</button>
 </div>
 <div id="gameScreen" class="hidden">
   <div class="controls">
@@ -148,12 +140,14 @@ const elements = [
   {symbol:"O", name:"酸素", number:8},
   {symbol:"F", name:"フッ素", number:9},
   {symbol:"Ne", name:"ネオン", number:10},
-  {symbol:"Au", name:"金", number:79},
-  {symbol:"Ag", name:"銀", number:47},
+  
+  
+  {symbol:"Fe", name:"鉄", number:26},
   {symbol:"Cu", name:"銅", number:29},
-  {symbol:"Ba", name:"バリウム", number:56},
   {symbol:"Zn", name:"亜鉛", number:30},
-  {symbol:"Fe", name:"鉄", number:26}
+  {symbol:"Ag", name:"銀", number:47},
+  {symbol:"Ba", name:"バリウム", number:56},
+  {symbol:"Au", name:"金", number:79},
 ];
 
 const elements_junior = [
@@ -188,15 +182,15 @@ let currentElements = [];
 function startGame(mode) {
   if (mode === "junior") {
     currentElements = elements_junior;
-    document.getElementById("title").innerText = "Mode_JUNIOR";
+    document.getElementById("title").innerText = "元素神経衰弱 JUNIOR";
   }
   if (mode === "high") {
     currentElements = elements_high;
-    document.getElementById("title").innerText = "Mode_HIGH";
+    document.getElementById("title").innerText = "元素神経衰弱 HIGH";
   }
   if (mode === "oni") {
     currentElements = elements_oni;
-    document.getElementById("title").innerText = "Mode_ONI";
+    document.getElementById("title").innerText = "元素神経衰弱 ONI";
   }
 
   document.getElementById("modeScreen").classList.add("hidden");
