@@ -37,13 +37,16 @@ select {
 }
 .grid {
   display: grid;
-  grid-template-columns: repeat(4, 80px);
+  grid-template-columns: repeat(4, 1fr); /* ←これに変更 */
   gap: 10px;
-  justify-content: center;
+  max-width: 90vw; /* 320px;   /* ←追加 */
+  margin: 0 auto;     /* ←中央寄せ */
 }
 .card {
-  width: 80px;
-  height: 100px;
+  /*width: 80px;
+  height: 100px;*/
+  width: 100%;   /* ←固定80pxやめる */
+  aspect-ratio: 4 / 5;  /* ←縦横比キープ（超便利） */
   background: mediumseagreen; /*#4CAF50;*/
   color: white;
   display: flex;
