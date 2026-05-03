@@ -136,17 +136,17 @@ button.reset {
   <br><br><br>
   <button class="junior" onclick="startGame('junior')">中学生モード</button><br><br>
   <button class="high" onclick="startGame('high')">高校生モード</button><br><br><br><br>
-  <button class="oni" onclick="startGame('oni')">鬼ハード</button>
+  <button class="oni" onclick="startGame('oni')">　鬼ハード　</button>
 </div>
 <div id="gameScreen" class="hidden">
   <div class="controls">
     <button class="back" onclick="backToMode()">◀︎モード選択</button>
     <button class="reset" onclick="initGame()">リセット</button>
     <select id="difficulty" onchange="initGame()">
-      <option value="4">Easy(4ペア)</option>
-      <option value="8" selected>Normal(8ペア)</option>
-      <option value="12">Hard(12ペア)</option>
-      <option value="16">Extreme(16ペア)</option>
+      <option value="4">Easy (4ペア)</option>
+      <option value="8" selected>Normal (8ペア)</option>
+      <option value="12">Hard (12ペア)</option>
+      <option value="16">Extreme (16ペア)</option>
     </select>
   </div>
   <div class="grid" id="game"></div>
@@ -154,6 +154,29 @@ button.reset {
 </div>
 
 <script>
+// 長い名前をいい感じに改行
+function formatName(name) {
+  const len = name.length;
+  // 4文字以下はそのまま
+  if (len <= 4) return name;
+  let parts = [];
+  if (len === 5) parts = [2, 3];
+  else if (len === 6) parts = [3, 3];
+  else if (len === 7) parts = [4, 3];
+  else if (len === 8) parts = [4, 4];
+  else if (len === 9) parts = [3, 3, 3];
+  else {
+  }
+  let result = "";
+  let index = 0;
+
+  parts.forEach((p, i) => {
+    result += name.slice(index, index + p);
+    index += p;
+    if (i !== parts.length - 1) result += "<br>";
+  });
+  return result;
+}
 const rawElements = `
 1 H 水素
 2 He ヘリウム
@@ -323,29 +346,6 @@ let second = null;
 let matched = 0;
 let currentElements = [];
 
-// 長い名前をいい感じに改行
-function formatName(name) {
-  const len = name.length;
-  // 4文字以下はそのまま
-  if (len <= 4) return name;
-  let parts = [];
-  if (len === 5) parts = [2, 3];
-  else if (len === 6) parts = [3, 3];
-  else if (len === 7) parts = [4, 3];
-  else if (len === 8) parts = [4, 4];
-  else if (len === 9) parts = [3, 3, 3];
-  else {
-  }
-  let result = "";
-  let index = 0;
-
-  parts.forEach((p, i) => {
-    result += name.slice(index, index + p);
-    index += p;
-    if (i !== parts.length - 1) result += "<br>";
-  });
-  return result;
-}
 function backToMode() {
   document.getElementById("gameScreen").classList.add("hidden");
   document.getElementById("modeScreen").classList.remove("hidden");
