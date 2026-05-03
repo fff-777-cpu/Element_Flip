@@ -311,15 +311,22 @@ const rawElements = `
 117 Ts テネシン
 118 Og オガネソン
 `;
-const elements = rawElements.trim().split("\n").map(line => {
-  const [number, symbol, name] = line.split(" ");
-  return {
-    number: Number(number),
-    symbol,
-    name: formatName(name)
-  };
-});
+const elements = rawElements
+  .trim()
+  .split("\n")
+  .map(line => {
+    const parts = line.trim().split(/\s+/);
+    if (parts.length < 3) return null;
 
+    const [number, symbol, name] = parts;
+
+    return {
+      number: Number(number),
+      symbol,
+      name: formatName(name)
+    };
+  })
+  .filter(Boolean);
 // 長い名前をいい感じに改行
 function formatName(name) {
   const len = name.length;
