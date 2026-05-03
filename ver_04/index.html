@@ -327,29 +327,7 @@ const elements = rawElements
     };
   })
   .filter(Boolean);
-// 長い名前をいい感じに改行
-function formatName(name) {
-  const len = name.length;
-  // 4文字以下はそのまま
-  if (len <= 4) return name;
-  let parts = [];
-  if (len === 5) parts = [2, 3];
-  else if (len === 6) parts = [3, 3];
-  else if (len === 7) parts = [4, 3];
-  else if (len === 8) parts = [4, 4];
-  else if (len === 9) parts = [3, 3, 3];
-  else {
-  }
-  let result = "";
-  let index = 0;
 
-  parts.forEach((p, i) => {
-    result += name.slice(index, index + p);
-    index += p;
-    if (i !== parts.length - 1) result += "<br>";
-  });
-  return result;
-}
 const juniorSymbols = [
   "H","O","N","C","Fe","Cu"
 ];
@@ -391,15 +369,36 @@ let first = null;
 let second = null;
 let matched = 0;
 // const totalPairs = elements.length;
-
 let currentElements = [];
 
+// 長い名前をいい感じに改行
+function formatName(name) {
+  const len = name.length;
+  // 4文字以下はそのまま
+  if (len <= 4) return name;
+  let parts = [];
+  if (len === 5) parts = [2, 3];
+  else if (len === 6) parts = [3, 3];
+  else if (len === 7) parts = [4, 3];
+  else if (len === 8) parts = [4, 4];
+  else if (len === 9) parts = [3, 3, 3];
+  else {
+  }
+  let result = "";
+  let index = 0;
+
+  parts.forEach((p, i) => {
+    result += name.slice(index, index + p);
+    index += p;
+    if (i !== parts.length - 1) result += "<br>";
+  });
+  return result;
+}
 function backToMode() {
   document.getElementById("gameScreen").classList.add("hidden");
   document.getElementById("modeScreen").classList.remove("hidden");
   document.getElementById("title").innerText = "元素神経衰弱";
 }
-  
 function startGame(mode) {
   if (mode === "junior") {
     currentElements = elements_junior;
@@ -419,7 +418,6 @@ function startGame(mode) {
 
   initGame();
 }
-  
 function initGame() {
   const pairCount = Number(document.getElementById("difficulty").value);
   // 全元素をシャッフル
