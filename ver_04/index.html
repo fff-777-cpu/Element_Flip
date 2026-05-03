@@ -244,12 +244,73 @@ const rawElements = `
 54 Xe キセノン
 55 Cs セシウム
 56 Ba バリウム
+
+57 La ランタン
+58 Ce セリウム
+59 Pr プラセオジム
+60 Nd ネオジム
+61 Pm プロメチウム
+62 Sm サマリウム
+63 Eu ユウロピウム
+64 Gd ガドリニウム
+65 Tb テルビウム
+66 Dy ジスプロシウム
+67 Ho ホルミウム
+68 Er エルビウム
+69 Tm ツリウム
+70 Yb イッテルビウム
+71 Lu ルテチウム
+
 72 Hf ハフニウム
 73 Ta タンタル
 74 W タングステン
+75 Re レニウム
+76 Os オスミウム
+77 Ir イリジウム
+78 Pt 白金
 79 Au 金
-`;
+80 Hg 水銀
+81 Tl タリウム
+82 Pb 鉛
+83 Bi ビスマス
+84 Po ポロニウム
+85 At アスタチン
+86 Rn ラドン
+87 Fr フランシウム
+88 Ra ラジウム
 
+89 Ac アクチニウム
+90 Th トリウム
+91 Pa プロトアクチニウム
+92 U ウラン
+93 Np ネプツニウム
+94 Pu プルトニウム
+95 Am アメリシウム
+96 Cm キュリウム
+97 Bk バークリウム
+98 Cf カリホルニウム
+99 Es アインスタイニウム
+100 Fm フェルミウム
+101 Md メンデレビウム
+102 No ノーベリウム
+103 Lr ローレンシウム
+
+104 Rf ラザホージウム
+105 Db ドブニウム
+106 Sg シーボーギウム
+107 Bh ボーリウム
+108 Hs ハッシウム
+109 Mt マイトネリウム
+110 Ds ダームスタチウム
+111 Rg レントゲニウム
+112 Cn コペルニシウム
+113 Nh ニホニウム
+114 Fl フレロビウム
+115 Mc モスコビウム
+116 Lv リバモリウム
+117 Ts テネシン
+118 Og オガネソン
+`;
 const elements = rawElements.trim().split("\n").map(line => {
   const [number, symbol, name] = line.split(" ");
   return {
@@ -261,11 +322,26 @@ const elements = rawElements.trim().split("\n").map(line => {
 
 // 長い名前をいい感じに改行
 function formatName(name) {
-  if (name.length >= 5) {
-    const mid = Math.ceil(name.length / 2);
-    return name.slice(0, mid) + "<br>" + name.slice(mid);
+  const len = name.length;
+  // 4文字以下はそのまま
+  if (len <= 4) return name;
+  let parts = [];
+  if (len === 5) parts = [2, 3];
+  else if (len === 6) parts = [3, 3];
+  else if (len === 7) parts = [4, 3];
+  else if (len === 8) parts = [4, 4];
+  else if (len === 9) parts = [3, 3, 3];
+  else {
   }
-  return name;
+  let result = "";
+  let index = 0;
+
+  parts.forEach((p, i) => {
+    result += name.slice(index, index + p);
+    index += p;
+    if (i !== parts.length - 1) result += "<br>";
+  });
+  return result;
 }
 const juniorSymbols = [
   "H","O","N","C","Fe","Cu"
