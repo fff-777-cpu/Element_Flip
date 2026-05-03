@@ -11,65 +11,54 @@ body {
   font-family: sans-serif;
 }
 button {
-  /*padding: 10px 20px;
-  font-size: 16px;*/
   padding: 1.5vw 2vw;
   font-size: clamp(12px, 2.5vw, 16px);
   border: none;
   border-radius: 8px;
-  /*background: dodgerblue;*/
   color: white;
   cursor: pointer;
   transition: 0.1s;
-  /*box-shadow: 0 4px 0 royalblue;*/
   white-space: nowrap;
 }
 button:active {
-  /*transform: translateY(+3px);
-  box-shadow: 0 1px 0 black;*/
   transform: translateY(clamp(2px, 0.5vw, 4px));
   box-shadow: 0 clamp(1px, 0.2vw, 2px) 0 black;
 }
 select {
-  /*margin-top: 15px;
-  padding: 8px 12px;
-  font-size: 16px;*/
   padding: 1vw 1.5vw;
   font-size: clamp(12px, 2.5vw, 16px);
   border-radius: 8px;
-  border: 2px solid royalblue; /*#2196F3; /* #4CAF50 -> #2196F3 */
+  border: 2px solid royalblue;
   background: white;
   cursor: pointer;
 }
 .grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr); /* ←これに変更 */
-  /*gap: 10px;*/
+  grid-template-columns: repeat(4, 1fr);
   gap: clamp(6px, 2vw, 10px);
-  max-width: 90vw; /* 320px;   /* ←追加 */
-  margin: 0 auto;     /* ←中央寄せ */
+  max-width: 90vw;
+  margin: 0 auto;
 }
 .controls {
   margin: 15px 0;
   display: flex;
   justify-content: center;
-  /*gap: 12px;*/
   gap: clamp(6px, 2vw, 12px);
   align-items: center;
-  max-width: 90vw;   /* ←これ追加 */
+  max-width: 90vw;
   margin-left: auto;
   margin-right: auto;
-  padding: 0 2vw;   /* ←これ追加 */
-  box-sizing: border-box; /* ←これも追加 */
+  padding: 0 2vw;
+  box-sizing: border-box;
 }
 .popup {
   position: fixed;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%) scale(1.2);
-  width: 240px;       /* ←横幅固定 */
-  height: 120px;      /* ←高さ固定 */
-  display: flex;      /* ←超重要 */
+  width: 240px;
+  height: 120px;
+  display: flex;
   align-items: center;
   justify-content: center;
   background: white;
@@ -88,17 +77,8 @@ select {
 }
 .hidden {
   display: none;
-  /*pointer-events: none;*/
 }
 /* モード選択 */
-/* button.junior {
-  background: mediumseagreen;
-  box-shadow: 0 4px 0 teal;
-}
-button.high {
-  background: mediumseagreen;
-  box-shadow: 0 4px 0 teal;
-} */
 button.junior,
 button.high {
   background: mediumseagreen;
@@ -106,59 +86,45 @@ button.high {
 }
 button.oni {
   background: red;
-  /*box-shadow: 0 4px 0 brown;*/
   box-shadow: 0 clamp(2px, 0.5vw, 4px) 0 brown;
 }
 /* ゲーム中 */
-/*button.back {
-  background: dodgerblue;
-  box-shadow: 0 4px 0 royalblue;
-}
-button.reset {
-  background: dodgerblue;
-  box-shadow: 0 4px 0 royalblue;
-}*/
 button.back,
 button.reset {
   background: dodgerblue;
   box-shadow: 0 clamp(2px, 0.5vw, 4px) 0 royalblue;
 }
 .card {
-  /*width: 80px;
-  height: 100px;*/
-  width: 100%;   /* ←固定80pxやめる */
-  aspect-ratio: 4 / 5;  /* ←縦横比キープ（超便利） */
-  background: mediumseagreen; /*#4CAF50;*/
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  background: mediumseagreen;
   color: white;
   display: flex;
   align-items: center;
   justify-content: center;
-  /*font-size: 19px;*/
   font-size: clamp(12px, 4vw, 20px);
   transition: 0.3s;
   border-radius: 8px;
   box-sizing: border-box;
 }
 .card.flipped {
-  /*transform: scale(1.01);*/
   background: white;
   color: black;
-  border: 2px solid mediumseagreen; /*#4CAF50;*/
+  border: 2px solid mediumseagreen;
   z-index: 10;
   position: relative;
 }
 .card.matched {
   background: gold;
   color: black;
-  border: 2px solid mediumseagreen; /*#4CAF50; /* orange -> #4CAF50 */
-  /*transform: scale(1.005);*/
+  border: 2px solid mediumseagreen;
 }
 .controls button,
 .controls select {
   flex: 1 1 0;
   min-width: 0;
-  overflow: hidden;          /* ←追加 */
-  text-overflow: ellipsis;   /* ←追加 */
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 </style>
 </head>
@@ -347,23 +313,6 @@ const elements_junior = elements.filter(e =>
 const elements_high = elements.filter(e =>
   highSymbols.includes(e.symbol)
 );
-// const elements_junior = [
-//   {symbol:"H", name:"水素"},
-//   {symbol:"O", name:"酸素"},
-//   {symbol:"N", name:"窒素"},
-//   {symbol:"C", name:"炭素"},
-//   {symbol:"Fe", name:"鉄"},
-//   {symbol:"Cu", name:"銅"}
-// ];
-// const elements_high = [
-//   ...elements_junior,
-//   {symbol:"Na", name:"ナトリウム"},
-//   {symbol:"Cl", name:"塩素"},
-//   {symbol:"Mg", name:"マグネシウム"},
-//   {symbol:"Ca", name:"カルシウム"},
-//   {symbol:"Zn", name:"亜鉛"}
-// ];
-
 // 鬼ハードは今の全部使う
 const elements_oni = elements;
   
@@ -372,7 +321,6 @@ const game = document.getElementById("game");
 let first = null;
 let second = null;
 let matched = 0;
-// const totalPairs = elements.length;
 let currentElements = [];
 
 // 長い名前をいい感じに改行
@@ -484,8 +432,6 @@ function initGame() {
           second = null;
 
           if (matched === totalPairs) {
-            //setTimeout(() => alert("クリア！"), 300);
-            //document.getElementById("clearMessage").innerText = "クリア！";
             const popup = document.getElementById("popup");
             popup.classList.remove("hidden");
             setTimeout(() => {
@@ -514,7 +460,6 @@ function initGame() {
     game.appendChild(div);
   });
 }
-//initGame();
 </script>
 
 </body>
