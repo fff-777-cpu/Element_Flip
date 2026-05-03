@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>元素神経衰弱</title>
+
+<style>
+body {
+  text-align: center;
+  font-family: sans-serif;
+}
+button {
+  /*padding: 10px 20px;
+  font-size: 16px;*/
+  padding: 1.5vw 2vw;
+  font-size: clamp(12px, 2.5vw, 16px);
+  border: none;
+  border-radius: 8px;
+  /*background: dodgerblue;*/
+  color: white;
+  cursor: pointer;
+  transition: 0.1s;
+  /*box-shadow: 0 4px 0 royalblue;*/
+  white-space: nowrap;
+}
+button:active {
+  /*transform: translateY(+3px);
+  box-shadow: 0 1px 0 black;*/
+  transform: translateY(clamp(2px, 0.5vw, 4px));
+  box-shadow: 0 clamp(1px, 0.2vw, 2px) 0 black;
+}
+select {
+  /*margin-top: 15px;
+  padding: 8px 12px;
+  font-size: 16px;*/
+  padding: 1vw 1.5vw;
+  font-size: clamp(12px, 2.5vw, 16px);
+  border-radius: 8px;
+  border: 2px solid royalblue; /*#2196F3; /* #4CAF50 -> #2196F3 */
+  background: white;
+  cursor: pointer;
+}
+.grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); /* ←これに変更 */
+  /*gap: 10px;*/
+  gap: clamp(6px, 2vw, 10px);
+  max-width: 90vw; /* 320px;   /* ←追加 */
+  margin: 0 auto;     /* ←中央寄せ */
+}
+.controls {
+  margin: 15px 0;
+  display: flex;
+  justify-content: center;
+  /*gap: 12px;*/
+  gap: clamp(6px, 2vw, 12px);
+  align-items: center;
+  max-width: 90vw;   /* ←これ追加 */
+  margin-left: auto;
+  margin-right: auto;
+  padding: 0 2vw;   /* ←これ追加 */
+  box-sizing: border-box; /* ←これも追加 */
+}
+.popup {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(1.2);
+  width: 240px;       /* ←横幅固定 */
+  height: 120px;      /* ←高さ固定 */
+  display: flex;      /* ←超重要 */
+  align-items: center;
+  justify-content: center;
+  background: white;
+  color: red;
+  font-size: 32px;
+  font-weight: bold;
+  border-radius: 16px;
+  z-index: 9999;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+  opacity: 0;
+  transition: opacity 0.35s ease, transform 0.35s ease;
+}
+.popup.show {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+}
+.hidden {
+  display: none;
+  /*pointer-events: none;*/
+}
+/* モード選択 */
+/* button.junior {
+  background: mediumseagreen;
+  box-shadow: 0 4px 0 teal;
+}
+button.high {
+  background: mediumseagreen;
+  box-shadow: 0 4px 0 teal;
+} */
+button.junior,
+button.high {
+  background: mediumseagreen;
+  box-shadow: 0 clamp(2px, 0.5vw, 4px) 0 teal;
+}
+button.oni {
+  background: red;
+  /*box-shadow: 0 4px 0 brown;*/
+  box-shadow: 0 clamp(2px, 0.5vw, 4px) 0 brown;
+}
+/* ゲーム中 */
+/*button.back {
+  background: dodgerblue;
+  box-shadow: 0 4px 0 royalblue;
+}
+button.reset {
+  background: dodgerblue;
+  box-shadow: 0 4px 0 royalblue;
+}*/
+button.back,
+button.reset {
+  background: dodgerblue;
+  box-shadow: 0 clamp(2px, 0.5vw, 4px) 0 royalblue;
+}
+.card {
+  /*width: 80px;
+  height: 100px;*/
+  width: 100%;   /* ←固定80pxやめる */
+  aspect-ratio: 4 / 5;  /* ←縦横比キープ（超便利） */
+  background: mediumseagreen; /*#4CAF50;*/
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /*font-size: 19px;*/
+  font-size: clamp(12px, 4vw, 20px);
+  transition: 0.3s;
+  border-radius: 8px;
+  box-sizing: border-box;
+}
+.card.flipped {
+  /*transform: scale(1.01);*/
+  background: white;
+  color: black;
+  border: 2px solid mediumseagreen; /*#4CAF50;*/
+  z-index: 10;
+  position: relative;
+}
+.card.matched {
+  background: gold;
+  color: black;
+  border: 2px solid mediumseagreen; /*#4CAF50; /* orange -> #4CAF50 */
+  /*transform: scale(1.005);*/
+}
+.controls button,
+.controls select {
+  flex: 1 1 0;
+  min-width: 0;
+  overflow: hidden;          /* ←追加 */
+  text-overflow: ellipsis;   /* ←追加 */
+}
+</style>
+</head>
+
+<body>
+<h2 id="title">元素神経衰弱</h2>
+<div id="clearMessage"></div>
+<div id="modeScreen">
+  <br><br><br>
+  <button class="junior" onclick="startGame('junior')">中学生モード</button><br><br>
+  <button class="high" onclick="startGame('high')">高校生モード</button><br><br><br><br>
+  <button class="oni" onclick="startGame('oni')">鬼ハード</button>
+</div>
+<div id="gameScreen" class="hidden">
+  <div class="controls">
+    <button class="back" onclick="backToMode()">◀︎モード選択</button>
+    <button class="reset" onclick="initGame()">リセット</button>
+    <select id="difficulty" onchange="initGame()">
+      <option value="4">Easy(4ペア)</option>
+      <option value="8" selected>Normal(8ペア)</option>
+      <option value="12">Hard(12ペア)</option>
+      <option value="16">Extreme(16ペア)</option>
+    </select>
+  </div>
+  <div class="grid" id="game"></div>
+  <div id="popup" class="popup hidden">クリア！</div>
+</div>
+
+<script>
+const rawElements = `
+1 H 水素
+2 He ヘリウム
+3 Li リチウム
+4 Be ベリリウム
+5 B ホウ素
+6 C 炭素
+7 N 窒素
+8 O 酸素
+9 F フッ素
+10 Ne ネオン
+11 Na ナトリウム
+12 Mg マグネシウム
+13 Al アルミニウム
+14 Si ケイ素
+15 P リン
+16 S 硫黄
+17 Cl 塩素
+18 Ar アルゴン
+19 K カリウム
+20 Ca カルシウム
+21 Sc スカンジウム
+22 Ti チタン
+23 V バナジウム
+24 Cr クロム
+25 Mn マンガン
+26 Fe 鉄
+27 Co コバルト
+28 Ni ニッケル
+29 Cu 銅
+30 Zn 亜鉛
+31 Ga ガリウム
+32 Ge ゲルマニウム
+33 As ヒ素
+34 Se セレン
+35 Br 臭素
+36 Kr クリプトン
+37 Rb ルビジウム
+38 Sr ストロンチウム
+39 Y イットリウム
+40 Zr ジルコニウム
+41 Nb ニオブ
+42 Mo モリブデン
+43 Tc テクネチウム
+44 Ru ルテニウム
+45 Rh ロジウム
+46 Pd パラジウム
+47 Ag 銀
+48 Cd カドミウム
+49 In インジウム
+50 Sn スズ
+51 Sb アンチモン
+52 Te テルル
+53 I ヨウ素
+54 Xe キセノン
+55 Cs セシウム
+56 Ba バリウム
+
+57 La ランタン
+58 Ce セリウム
+59 Pr プラセオジム
+60 Nd ネオジム
+61 Pm プロメチウム
+62 Sm サマリウム
+63 Eu ユウロピウム
+64 Gd ガドリニウム
+65 Tb テルビウム
+66 Dy ジスプロシウム
+67 Ho ホルミウム
+68 Er エルビウム
+69 Tm ツリウム
+70 Yb イッテルビウム
+71 Lu ルテチウム
+
+72 Hf ハフニウム
+73 Ta タンタル
+74 W タングステン
+75 Re レニウム
+76 Os オスミウム
+77 Ir イリジウム
+78 Pt 白金
+79 Au 金
+80 Hg 水銀
+81 Tl タリウム
+82 Pb 鉛
+83 Bi ビスマス
+84 Po ポロニウム
+85 At アスタチン
+86 Rn ラドン
+87 Fr フランシウム
+88 Ra ラジウム
+
+89 Ac アクチニウム
+90 Th トリウム
+91 Pa プロトアクチニウム
+92 U ウラン
+93 Np ネプツニウム
+94 Pu プルトニウム
+95 Am アメリシウム
+96 Cm キュリウム
+97 Bk バークリウム
+98 Cf カリホルニウム
+99 Es アインスタイニウム
+100 Fm フェルミウム
+101 Md メンデレビウム
+102 No ノーベリウム
+103 Lr ローレンシウム
+
+104 Rf ラザホージウム
+105 Db ドブニウム
+106 Sg シーボーギウム
+107 Bh ボーリウム
+108 Hs ハッシウム
+109 Mt マイトネリウム
+110 Ds ダームスタチウム
+111 Rg レントゲニウム
+112 Cn コペルニシウム
+113 Nh ニホニウム
+114 Fl フレロビウム
+115 Mc モスコビウム
+116 Lv リバモリウム
+117 Ts テネシン
+118 Og オガネソン
+`;
+const elements = rawElements
+  .trim()
+  .split("\n")
+  .map(line => {
+    const parts = line.trim().split(/\s+/);
+    if (parts.length < 3) return null;
+
+    const [number, symbol, name] = parts;
+
+    return {
+      number: Number(number),
+      symbol,
+      name: formatName(name)
+    };
+  })
+  .filter(Boolean);
+
+const juniorSymbols = [
+  "H","He","C","N","O",
+  "Na","Mg","Al","S","Cl","K","Ca",
+  "Cu","Zn","Ag","Fe","Ba","Au"
+];
+const highSymbols = [
+  ...juniorSymbols,
+  "Li","Be","B","F","Ne","Si","P","Ar",
+  "Br","Sr","Sn","I","Pt","Hg","Pb"
+];
+
+// elementsから自動抽出
+const elements_junior = elements.filter(e =>
+  juniorSymbols.includes(e.symbol)
+);
+const elements_high = elements.filter(e =>
+  highSymbols.includes(e.symbol)
+);
+// const elements_junior = [
+//   {symbol:"H", name:"水素"},
+//   {symbol:"O", name:"酸素"},
+//   {symbol:"N", name:"窒素"},
+//   {symbol:"C", name:"炭素"},
+//   {symbol:"Fe", name:"鉄"},
+//   {symbol:"Cu", name:"銅"}
+// ];
+// const elements_high = [
+//   ...elements_junior,
+//   {symbol:"Na", name:"ナトリウム"},
+//   {symbol:"Cl", name:"塩素"},
+//   {symbol:"Mg", name:"マグネシウム"},
+//   {symbol:"Ca", name:"カルシウム"},
+//   {symbol:"Zn", name:"亜鉛"}
+// ];
+
+// 鬼ハードは今の全部使う
+const elements_oni = elements;
+  
+const game = document.getElementById("game");
+
+let first = null;
+let second = null;
+let matched = 0;
+// const totalPairs = elements.length;
+let currentElements = [];
+
+// 長い名前をいい感じに改行
+function formatName(name) {
+  const len = name.length;
+  // 4文字以下はそのまま
+  if (len <= 4) return name;
+  let parts = [];
+  if (len === 5) parts = [2, 3];
+  else if (len === 6) parts = [3, 3];
+  else if (len === 7) parts = [4, 3];
+  else if (len === 8) parts = [4, 4];
+  else if (len === 9) parts = [3, 3, 3];
+  else {
+  }
+  let result = "";
+  let index = 0;
+
+  parts.forEach((p, i) => {
+    result += name.slice(index, index + p);
+    index += p;
+    if (i !== parts.length - 1) result += "<br>";
+  });
+  return result;
+}
+function backToMode() {
+  document.getElementById("gameScreen").classList.add("hidden");
+  document.getElementById("modeScreen").classList.remove("hidden");
+  document.getElementById("title").innerText = "元素神経衰弱";
+}
+function startGame(mode) {
+  if (mode === "junior") {
+    currentElements = elements_junior;
+    document.getElementById("title").innerText = "元素神経衰弱 JUNIOR";
+  }
+  if (mode === "high") {
+    currentElements = elements_high;
+    document.getElementById("title").innerText = "元素神経衰弱 HIGH";
+  }
+  if (mode === "oni") {
+    currentElements = elements_oni;
+    document.getElementById("title").innerText = "元素神経衰弱 ONI";
+  }
+
+  document.getElementById("modeScreen").classList.add("hidden");
+  document.getElementById("gameScreen").classList.remove("hidden");
+
+  initGame();
+}
+function initGame() {
+  const pairCount = Number(document.getElementById("difficulty").value);
+  // 全元素をシャッフル
+  //const shuffled = [...elements].sort(() => Math.random() - 0.5);
+  const shuffled = [...currentElements].sort(() => Math.random() - 0.5);
+  // 必要な分だけ取る
+  const selected = shuffled.slice(0, pairCount);
+  // cardsをここで作る
+  let cards = [];
+  selected.forEach(e => {
+    cards.push({value:e.symbol, pair:e.name});
+    cards.push({value:e.name, pair:e.symbol});
+  });
+  // cardsもシャッフル
+  cards.sort(() => Math.random() - 0.5);
+  // ペア数
+  //const totalPairs = pairCount;
+  const totalPairs = selected.length;
+  
+  game.innerHTML = ""; // ←盤面リセット
+
+  first = null;
+  second = null;
+  matched = 0;
+
+  cards.forEach(card => {
+    const div = document.createElement("div");
+    div.className = "card";
+    div.innerText = "?";
+
+    div.dataset.value = card.value;
+    div.dataset.pair = card.pair;
+
+    div.onclick = () => {
+      if (
+        div.classList.contains("flipped") ||
+        div.classList.contains("matched") ||
+        div === first ||
+        second
+      ) return;
+
+      div.classList.add("flipped");
+      div.innerHTML = card.value;
+
+      if (!first) {
+        first = div;
+      } else {
+        second = div;
+
+        if (first.dataset.value === div.dataset.pair) {
+          matched++;
+
+          first.classList.add("matched");
+          second.classList.add("matched");
+
+          first.classList.remove("flipped");
+          second.classList.remove("flipped");
+
+          first = null;
+          second = null;
+
+          if (matched === totalPairs) {
+            //setTimeout(() => alert("クリア！"), 300);
+            //document.getElementById("clearMessage").innerText = "クリア！";
+            const popup = document.getElementById("popup");
+            popup.classList.remove("hidden");
+            setTimeout(() => {
+              popup.classList.add("show");
+            }, 10);
+            setTimeout(() => {
+              popup.classList.remove("show");
+            }, 2000);
+            setTimeout(() => {
+              popup.classList.add("hidden");
+            }, 2400);
+          }
+        } else {
+          setTimeout(() => {
+            first.classList.remove("flipped");
+            second.classList.remove("flipped");
+            first.innerText = "?";
+            second.innerText = "?";
+            first = null;
+            second = null;
+          }, 1500);
+        }
+      }
+    };
+
+    game.appendChild(div);
+  });
+}
+//initGame();
+</script>
+
+</body>
+</html>
